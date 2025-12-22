@@ -19,4 +19,7 @@ writeFile(fileName, "This is new content added to the file.", {
   .then((result) => {
     console.log("fourth then function");
     console.log(result);
+  })
+  .catch((error) => {
+    console.error(error);
   });
