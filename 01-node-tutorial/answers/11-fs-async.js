@@ -1,4 +1,4 @@
-const { writeFile, write } = require("fs");
+const { writeFile, readFile } = require("fs");
 
 console.log("at start");
 const filePath = "./temporary/fileB.txt";
