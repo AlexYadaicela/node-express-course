@@ -8,5 +8,44 @@
   <body>
     <h1>This is my page</h1>
     <p>this page has content</p>
+    <ul id="data"></ul>
+    <button id="btn_fetch">fetch data</button>
+    <script>
+      const btn = document.getElementById("btn_fetch");
+      async function getData() {
+        try {
+          const url = "http://localhost:3000/api/v1/products";
+          const response = await fetch(url);
+
+          if (!response.ok) {
+            throw new Error(`Network response: ${response.status}`);
+          }
+
+          const data = await response.json();
+          handleClick(data);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      const ul = document.getElementById("data");
+
+      function handleClick(products) {
+        btn.addEventListener("click", () => {
+          const fragment = document.createDocumentFragment();
+          for (const product of products) {
+            console.log(product);
+            const img = new Image();
+            const li = document.createElement("li");
+
+            li.textContent = `Name of product: ${product.name}, Price: ${product.price}, Description: ${product.desc}`;
+            fragment.appendChild(li);
+          }
+          ul.appendChild(fragment);
+          btn.disabled = true;
+        });
+      }
+
+      getData();
+    </script>
   </body>
 </html>
