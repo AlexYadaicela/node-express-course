@@ -78,6 +78,19 @@ app.get("/api/v1/query", (req, res) => {
 // END: API PRODUCTS
 
 // START: API PEOPLE
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.post("/api/v1/people", (req, res) => {
+  if (!req.body.name) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Please provide a name" });
+  }
+  people.push({ id: people.length + 1, name: req.body.name });
+  res.status(201).json({ success: true, name: req.body.name });
+});
+
 app.get("/api/v1/people", (req, res) => {
   res.json(people);
 });
