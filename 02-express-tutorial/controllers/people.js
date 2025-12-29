@@ -48,7 +48,33 @@ const updatePerson = (req, res) => {
 
   people[entryFound] = { ...people[entryFound], name: req.body.name };
 
-  res.status(200).json(people[entryFound]);
+  res.status(200).json({
+    success: true,
+    entry: people[entryFound],
+  });
 };
 
-module.exports = { addPerson, getPeople, getPersonById, updatePerson };
+const deletePerson = (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide a valid id",
+    });
+  }
+
+  const alteredArray = people.filter((p) => p.id !== Number(req.params.id));
+
+  res.status(200).json({
+    success: true,
+    message: `Entry with id:${req.params.id} was deleted`,
+    alteredArray,
+  });
+};
+
+module.exports = {
+  addPerson,
+  getPeople,
+  getPersonById,
+  updatePerson,
+  deletePerson,
+};

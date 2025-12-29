@@ -3,6 +3,7 @@ const {
   getPeople,
   getPersonById,
   updatePerson,
+  deletePerson,
 } = require("../controllers/people");
 
 const express = require("express");
@@ -22,6 +23,10 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
   updatePerson(req, res);
+});
+
+router.delete("/:id", (req, res) => {
+  deletePerson(req, res);
 });
 
 module.exports = router;
