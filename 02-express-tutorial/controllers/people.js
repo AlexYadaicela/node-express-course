@@ -30,4 +30,25 @@ const getPersonById = (req, res) => {
   });
 };
 
-module.exports = { addPerson, getPeople, getPersonById };
+const updatePerson = (req, res) => {
+  const entryFound = people.findIndex((p) => p.id === Number(req.params.id));
+  if (entryFound < 0) {
+    return res.status(404).json({
+      success: false,
+      message: "Entry not found",
+    });
+  }
+
+  if (!req.body.name) {
+    return res.status("400").json({
+      success: false,
+      message: "Please provide a name",
+    });
+  }
+
+  people[entryFound] = { ...people[entryFound], name: req.body.name };
+
+  res.status(200).json(people[entryFound]);
+};
+
+module.exports = { addPerson, getPeople, getPersonById, updatePerson };
