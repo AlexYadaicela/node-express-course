@@ -1,5 +1,6 @@
 const express = require("express");
 const { products, people } = require("./data");
+const peopleRouter = require("./routes/people");
 
 const app = express();
 const port = 3000;
@@ -15,7 +16,7 @@ const logger = (req, res, next) => {
 
 app.use(logger);
 
-app.use(express.static("./public"));
+app.use(express.static("./methods-public"));
 
 app.get("/api/v1/test", (req, res) => {
   res.status(500).json({
@@ -81,19 +82,8 @@ app.get("/api/v1/query", (req, res) => {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.post("/api/v1/people", (req, res) => {
-  if (!req.body.name) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Please provide a name" });
-  }
-  people.push({ id: people.length + 1, name: req.body.name });
-  res.status(201).json({ success: true, name: req.body.name });
-});
+app.use("/api/v1/people", peopleRouter);
 
-app.get("/api/v1/people", (req, res) => {
-  res.json(people);
-});
 // END: API PEOPLE
 
 // keep at end
