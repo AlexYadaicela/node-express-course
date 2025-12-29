@@ -1,8 +1,19 @@
 const express = require("express");
-const { products } = require("./data");
+const { products, people } = require("./data");
 
 const app = express();
 const port = 3000;
+
+// middleware function
+const logger = (req, res, next) => {
+  const method = req.method;
+  const url = req.url;
+  const date = new Date().getFullYear();
+  console.log("logger print:", method, url, date);
+  next();
+};
+
+app.use(logger);
 
 app.use(express.static("./public"));
 
@@ -12,7 +23,7 @@ app.get("/api/v1/test", (req, res) => {
   });
 });
 
-// get all products
+// START: API PRODUCTS
 app.get("/api/v1/products", (req, res) => {
   try {
     res.json(products);
@@ -64,7 +75,15 @@ app.get("/api/v1/query", (req, res) => {
 
   res.json(filterProducts);
 });
+// END: API PRODUCTS
 
+// START: API PEOPLE
+app.get("/api/v1/people", (req, res) => {
+  res.json(people);
+});
+// END: API PEOPLE
+
+// keep at end
 app.all("*", (req, res) => {
   res.status(404).send("<h1>page not found</h1>");
 });
