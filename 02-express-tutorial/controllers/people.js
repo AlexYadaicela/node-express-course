@@ -14,4 +14,20 @@ const getPeople = (req, res) => {
   res.json(people);
 };
 
-module.exports = { addPerson, getPeople };
+const getPersonById = (req, res) => {
+  const personId = people.find((p) => p.id === Number(req.params.id));
+
+  if (!personId) {
+    return res.status(404).json({
+      success: false,
+      message: "Entry not found",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    entry: personId,
+  });
+};
+
+module.exports = { addPerson, getPeople, getPersonById };
