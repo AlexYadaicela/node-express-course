@@ -1,13 +1,28 @@
-const logon = (req, res) => {
-  console.log(req.body);
+require("dotenv").config;
+const jwt = require("jsonwebtoken");
+
+const logon = async (req, res) => {
   const { name, password } = req.body;
-  res.status(200).json({
+  if (!name || !password) {
+    throw new Error("Please provide name and password");
+  }
+  const payload = {
     name: name,
-    password: password,
-  });
+  };
+  jwt.sign(
+    payload,
+    process.env.PRIVATE_KEY,
+    { expiresIn: "24h" },
+    (err, token) => {
+      if (err) {
+        return res.status(500).json({ err });
+      }
+      res.status(200).json({ token });
+    }
+  );
 };
 
-const user = (req, res) => {
+const user = async (req, res) => {
   res.status(200).json({ message: "this is entering user" });
 };
 
